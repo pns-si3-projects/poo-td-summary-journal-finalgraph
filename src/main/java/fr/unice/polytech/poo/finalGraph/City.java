@@ -26,12 +26,14 @@ public record City(String nom, double latitude, double longitude) {
      * @return la distance en mètre entre les deux villes
      */
     public double distance(City dest) {
+        // Rayon Terre * arccos(sin(lat1) * sin(lat2) + cos(lat1) * cos(lat2) * cos(lon2 - lon1))
         return 6378137 * Math.acos(Math.sin(this.radLat()) * Math.sin(dest.radLat())
                 + Math.cos(this.radLat()) * Math.cos(dest.radLat()) * Math.cos(dest.radLon() - this.radLon()));
     }
 
     @Override
     public String toString() {
+        // Nom ville (lat°,lon°)
         return nom + " (" + latitude +
                 "°," + longitude + "°)";
     }
