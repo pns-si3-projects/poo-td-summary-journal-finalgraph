@@ -1,4 +1,4 @@
-package fr.unice.polytech.poo.example;
+package fr.unice.polytech.poo.finalGraph;
 
 import static org.junit.jupiter.api.Assertions.*;
 

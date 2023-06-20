@@ -1,4 +1,4 @@
-package fr.unice.polytech.poo.example;
+package fr.unice.polytech.poo.finalGraph;
 public class OneClass {
     public String hello() {
         return "hello";
