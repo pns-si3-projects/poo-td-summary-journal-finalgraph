@@ -1,0 +1,14 @@
+{
+  "tests": [
+    {
+      "name": "mvn",
+      "setup": "",
+      "run": "mvn -B package --file pom.xml",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 5,
+      "points": 10
+    }
+  ]
+}
