@@ -13,6 +13,7 @@ public class CityCSVParser {
 
     /**
      * Constructeur
+     *
      * @param fileName le nom du fichier CSV (avec virgules) à utiliser.
      *                 Doit contenir le nom de la ville, la latitude et la longitude en degrés
      */
@@ -28,8 +29,8 @@ public class CityCSVParser {
             }
 
             bufferedReader.readLine();
-            // Prend chaque ligne et les sépare par la virgule (CSV avec virgules)
-            cities = bufferedReader.lines().map(s -> s.split(",")).toList();
+            // Prend chaque ligne et les sépare par la virgule (CSV avec virgules) et retire les " s'il y en a
+            cities = bufferedReader.lines().map(s -> s.replaceAll("\"", "").split(",")).toList();
         } catch (IOException e) {
             throw new IllegalArgumentException("unreadable file", e);
         }
@@ -37,16 +38,16 @@ public class CityCSVParser {
 
     /**
      * Renvoie toutes les villes, construites selon les indices donnés en paramètre
-     * @param nameInd l'indice du nom de la ville (de préférence le plus long)
-     * @param latInd l'indice de la latitude en degrés
-     * @param lonInd l'indice de la longitude en degrés
+     *
+     * @param nameInd le numéro de la colonne du nom de la ville (de préférence le plus long) {@code nameInd >= 1}
+     * @param latInd  le numéro de la colonne de la latitude en degrés {@code latInd >= 1}
+     * @param lonInd  le numéro de la colonne de la longitude en degrés {@code lonInd >= 1}
      * @return la liste des villes (sans doublons)
      */
     public List<City> parseCities(int nameInd, int latInd, int lonInd) {
-        return cities.parallelStream()
-                .map(strings -> new City(strings[nameInd], Double.parseDouble(strings[latInd]),
-                        Double.parseDouble(strings[lonInd])))
-                .distinct()
+        return cities.stream()
+                .map(strings -> new City(strings[nameInd - 1].toLowerCase(), Double.parseDouble(strings[latInd - 1]),
+                        Double.parseDouble(strings[lonInd - 1])))
                 .toList();
     }
 }
