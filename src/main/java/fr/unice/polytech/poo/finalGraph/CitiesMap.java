@@ -30,16 +30,16 @@ public class CitiesMap {
     }
 
     /**
-     * Recherche le chemin le plus court pour aller de la ville de départ à la ville de destination
+     * Recherche le chemin le plus court pour aller de la ville de départ à la ville de destination en appliquant l'algorithme de dijkstra
      * @param start ville de départ
      * @param dest ville de destination
      * @return la liste des villes par lesquelles on passe en prenant ce chemin
      */
     public List<City> shortestPath(City start, City dest){
-        Vertex verStart = unDiGraph.getVertex(start.nom());
-        Vertex verDest = unDiGraph.getVertex(dest.nom());
-        List<Vertex> path = dijkstra(verStart, verDest);
-        return path.stream().map((vertex -> mapCities.get(vertex.getTag()))).collect(Collectors.toList());
+        //TODO Cherche le chemin le plus court pour atteindre la ville de destination depuis la ville de départ
+        //TODO Renvoie la liste des villes de ce chemin
+
+        return new ArrayList<>();
     }
 
     /**
@@ -52,31 +52,13 @@ public class CitiesMap {
         mapCities = new HashMap<>(cities.size());
         unDiGraph = new UnDiGraph();
 
-        for (City city: cities){
-            try {
-                if (!mapCities.containsKey(city.nom())){
-                    String cityNom = city.nom();
-                    unDiGraph.addVertex(cityNom);
+        //TODO Construire la carte en ajoutant les villes de "cities" dans la map et dans le graph en créant des vertex les représentant
 
-                    for (City inGraphCity: mapCities.values()){
-                        double distance = city.distance(inGraphCity);
-                        if (distance <= distanceMax){
-                            unDiGraph.addEdge(unDiGraph.getVertex(cityNom), unDiGraph.getVertex(inGraphCity.nom()), distance);
-                        }
-                    }
-                    mapCities.put(cityNom, city);
-                }
-            }
-
-            catch (DuplicateTagException e){
-                throw new IllegalArgumentException(e);
-            }
-        }
         return unDiGraph;
     }
 
     /**
-     * l'algorithme de dijkstra
+     * algorithme de dijkstra
      * @param start
      * @param end
      * @return la liste des vertex du chemin
@@ -87,11 +69,9 @@ public class CitiesMap {
         Map<Vertex, Double> distances = new HashMap<>(size);
         Deque<Vertex> toVisit = new LinkedList<>();
 
-        origin.put(start, start);
-        toVisit.add(start);
-        distances.put(start, 0.0);
-        visitDijkstra(end, origin, distances, toVisit);
-        return buildPath(start, end, origin);
+        //TODO Rechercher le chemin le plus court puis le construire
+
+        return new ArrayList<>();
     }
 
     private void visitDijkstra(Vertex end, Map<Vertex, Vertex> origin,
@@ -99,37 +79,24 @@ public class CitiesMap {
         Vertex current;
         double curEdjeWeight;
 
-        while (!toVisit.isEmpty()) {
-            current = toVisit.pop();
-            if (current.equals(end)) {
-                return;
-            }
+        // TODO parcourir les vertex présents dans toVisit puis parcourir les vertex adjacents jusqu'à arriver au vertex d'arriver.
+        // Prendre en compte les distances
 
-            for (Vertex adjacent : unDiGraph.adjacents(current)) {
-                if (!origin.containsKey(adjacent)) {
-                    toVisit.add(adjacent);
-                }
-
-                curEdjeWeight = distances.get(current) + unDiGraph.findEdge(current, adjacent).weight();
-                if (!distances.containsKey(adjacent) || distances.get(adjacent) > curEdjeWeight) {
-                    distances.put(adjacent, curEdjeWeight);
-                    origin.put(adjacent, current);
-                }
-            }
-        }
     }
 
+    /**
+     * Construit le chemin depuis une map de vertex donnée ainsi que le vertex de départ et le vertex d'arriver
+     * @param start vertex de départ
+     * @param end vertex d'arrivée
+     * @param origin map des vertex du chemin
+     * @return la liste des vertex par lesquel on passe à travers le chemin créé.
+     */
     private List<Vertex> buildPath(Vertex start, Vertex end, Map<Vertex, Vertex> origin) {
         List<Vertex> path = new ArrayList<>();
 
-        while (origin.containsKey(end) && !end.equals(start)) {
-            path.add(0, end);
-            end = origin.get(end);
-        }
+        //TODO Mettre dans l'attribut "path" la liste des vertex parcouru par le chemin
 
-        if (end.equals(start)) {
-            path.add(0, start);
-        }
+        // à compléter
         return path;
     }
 
