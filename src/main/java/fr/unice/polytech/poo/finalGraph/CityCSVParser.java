@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CityCSVParser {
@@ -28,14 +29,15 @@ public class CityCSVParser {
                         StandardCharsets.UTF_8));
             }
 
-            bufferedReader.readLine();
+            bufferedReader.readLine(); // Passe le header du CSV
+
             //TODO Mettre dans l'attribut "cities" la liste des villes (sous forme de tableau)
             /*
              * Une ville est représentée par une ligne
              * Les données d'une ville sont séparés par une virgule (CSV avec virgules)
              * Il faut s'assurer qu'il n'y a plus de '"' (double guillemets)
             */
-            cities = bufferedReader.lines().map(s -> s.replaceAll("\"", "").split(",")).toList();
+            cities = new ArrayList<>(); // à modifier
         } catch (IOException e) {
             throw new IllegalArgumentException("unreadable file", e);
         }
@@ -43,6 +45,7 @@ public class CityCSVParser {
 
     /**
      * Renvoie toutes les villes, construites selon les indices donnés en paramètre
+     * Pas besoin de trier les lignes, juste les transformer en villes
      *
      * @param nameInd le numéro de la colonne du nom de la ville (de préférence le plus long) {@code nameInd >= 1}
      * @param latInd  le numéro de la colonne de la latitude en degrés {@code latInd >= 1}
@@ -50,9 +53,6 @@ public class CityCSVParser {
      * @return la liste des villes (sans doublons)
      */
     public List<City> parseCities(int nameInd, int latInd, int lonInd) {
-        return cities.stream()
-                .map(strings -> new City(strings[nameInd - 1].toLowerCase(), Double.parseDouble(strings[latInd - 1]),
-                        Double.parseDouble(strings[lonInd - 1])))
-                .toList();
+        return new ArrayList<>();
     }
 }
