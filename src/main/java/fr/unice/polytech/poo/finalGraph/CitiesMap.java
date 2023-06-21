@@ -1,12 +1,12 @@
 package fr.unice.polytech.poo.finalGraph;
 
+import fr.unice.polytech.poo.graph.AbstractGraph;
 import fr.unice.polytech.poo.graph.DuplicateTagException;
 import fr.unice.polytech.poo.graph.UnDiGraph;
 import fr.unice.polytech.poo.graph.Vertex;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class CitiesMap {
     private Map<String, City> mapCities;
@@ -29,11 +29,18 @@ public class CitiesMap {
         return mapCities.get(name);
     }
 
+    /**
+     * Recherche le chemin le plus court pour aller de la ville de départ à la ville de destination
+     * @param start ville de départ
+     * @param dest ville de destination
+     * @return la liste des villes par lesquelles on passe en prenant ce chemin
+     */
     public List<City> shortestPath(City start, City dest){
-
+        Vertex verStart = unDiGraph.getVertex(start.nom());
+        Vertex verDest = unDiGraph.getVertex(dest.nom());
+        List<Vertex> path = dijkstra(verStart, verDest);
+        return path.stream().map((vertex -> mapCities.get(vertex.getTag()))).collect(Collectors.toList());
     }
-
-
 
     /**
      * Cnstruit la carte des villes à partir d'une liste de villes et d'une distance maximale pour relier les villes
@@ -65,6 +72,64 @@ public class CitiesMap {
             }
         }
         return unDiGraph;
+    }
+
+    /**
+     * l'algorithme de dijkstra
+     * @param start
+     * @param end
+     * @return la liste des vertex du chemin
+     */
+    public List<Vertex> dijkstra(Vertex start, Vertex end) {
+        int size = unDiGraph.nbVertices();
+        Map<Vertex, Vertex> origin = new HashMap<>(size);
+        Map<Vertex, Double> distances = new HashMap<>(size);
+        Deque<Vertex> toVisit = new LinkedList<>();
+
+        origin.put(start, start);
+        toVisit.add(start);
+        distances.put(start, 0.0);
+        visitDijkstra(end, origin, distances, toVisit);
+        return buildPath(start, end, origin);
+    }
+
+    private void visitDijkstra(Vertex end, Map<Vertex, Vertex> origin,
+                                      Map<Vertex, Double> distances, Deque<Vertex> toVisit) {
+        Vertex current;
+        double curEdjeWeight;
+
+        while (!toVisit.isEmpty()) {
+            current = toVisit.pop();
+            if (current.equals(end)) {
+                return;
+            }
+
+            for (Vertex adjacent : unDiGraph.adjacents(current)) {
+                if (!origin.containsKey(adjacent)) {
+                    toVisit.add(adjacent);
+                }
+
+                curEdjeWeight = distances.get(current) + unDiGraph.findEdge(current, adjacent).weight();
+                if (!distances.containsKey(adjacent) || distances.get(adjacent) > curEdjeWeight) {
+                    distances.put(adjacent, curEdjeWeight);
+                    origin.put(adjacent, current);
+                }
+            }
+        }
+    }
+
+    private List<Vertex> buildPath(Vertex start, Vertex end, Map<Vertex, Vertex> origin) {
+        List<Vertex> path = new ArrayList<>();
+
+        while (origin.containsKey(end) && !end.equals(start)) {
+            path.add(0, end);
+            end = origin.get(end);
+        }
+
+        if (end.equals(start)) {
+            path.add(0, start);
+        }
+        return path;
     }
 
 }
