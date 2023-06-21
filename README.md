@@ -3,8 +3,10 @@
 
 ## Here is the introduction to this journal
 
-[My code is there](./src/main/java/fr/unice/polytech/poo/finalGraph/)  
-[The database is there](./data/)
+- [The TD subjet is there](Enoncé%20Final%20Graph.docx)  
+- [The code to complete](./src/main/java/fr/unice/polytech/poo/finalGraph/)  
+- [The database used in tests](./data/)
+- [The files to test your methods](./src/test/java/fr/unice/polytech/poo/finalGraph/)
 
 ## To execute the program:
 <pre>

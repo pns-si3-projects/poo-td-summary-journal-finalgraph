@@ -29,7 +29,12 @@ public class CityCSVParser {
             }
 
             bufferedReader.readLine();
-            // Prend chaque ligne et les sépare par la virgule (CSV avec virgules) et retire les " s'il y en a
+            //TODO Mettre dans l'attribut "cities" la liste des villes (sous forme de tableau)
+            /*
+             * Une ville est représentée par une ligne
+             * Les données d'une ville sont séparés par une virgule (CSV avec virgules)
+             * Il faut s'assurer qu'il n'y a plus de '"' (double guillemets)
+            */
             cities = bufferedReader.lines().map(s -> s.replaceAll("\"", "").split(",")).toList();
         } catch (IOException e) {
             throw new IllegalArgumentException("unreadable file", e);
