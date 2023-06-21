@@ -14,3 +14,5 @@ mvn -B package --file pom.xml
 </pre>
 
 With each push, this command is executed and runs all the tests.
+
+*Code inspired by the TD made by Mrs. Blay Mireille*
