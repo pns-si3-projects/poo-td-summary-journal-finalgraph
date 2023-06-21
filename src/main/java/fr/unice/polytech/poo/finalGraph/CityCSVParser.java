@@ -45,7 +45,6 @@ public class CityCSVParser {
 
     /**
      * Renvoie toutes les villes, construites selon les indices donnés en paramètre
-     * Pas besoin de trier les lignes, juste les transformer en villes
      *
      * @param nameInd le numéro de la colonne du nom de la ville (de préférence le plus long) {@code nameInd >= 1}
      * @param latInd  le numéro de la colonne de la latitude en degrés {@code latInd >= 1}
@@ -53,6 +52,7 @@ public class CityCSVParser {
      * @return la liste des villes (sans doublons)
      */
     public List<City> parseCities(int nameInd, int latInd, int lonInd) {
+        // Pas besoin de trier les lignes, juste les transformer en villes (les streams parallèles sont plus efficaces)
         return new ArrayList<>();
     }
 }
