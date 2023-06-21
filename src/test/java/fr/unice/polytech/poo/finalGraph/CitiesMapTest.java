@@ -52,4 +52,10 @@ class CitiesMapTest {
         assertEquals(5,citiesMap.unDiGraph.nbVertices());
         assertEquals(4, citiesMap.unDiGraph.nbEdges());
     }
+
+    @Test
+    void shortestPath() {
+        List<City> st_etienne_to_lyon = citiesMap.shortestPath(st_etienne, lyon);
+        assertEquals(3, st_etienne_to_lyon.size());
+    }
 }
