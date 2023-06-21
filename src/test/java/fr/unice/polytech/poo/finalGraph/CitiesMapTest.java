@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -57,5 +58,19 @@ class CitiesMapTest {
     void shortestPath() {
         List<City> st_etienne_to_lyon = citiesMap.shortestPath(st_etienne, lyon);
         assertEquals(3, st_etienne_to_lyon.size());
+    }
+
+    @Test
+    void test() {
+        CityCSVParser cityCSVParser = new CityCSVParser("data/cities.csv");
+        List<City> cities = cityCSVParser.parseCities(4, 5, 6);
+        List<City> citiesReduced = cities.stream().limit(3000).collect(Collectors.toList());
+        CitiesMap allCitiesMap = new CitiesMap();
+        allCitiesMap.buildMap(citiesReduced, 150000);
+        System.out.println(allCitiesMap.unDiGraph.nbVertices());
+        System.out.println(allCitiesMap.unDiGraph.nbEdges());
+
+        List<City> shortestPath = allCitiesMap.shortestPath(citiesReduced.get(1), citiesReduced.get(20));
+        System.out.println(shortestPath);
     }
 }

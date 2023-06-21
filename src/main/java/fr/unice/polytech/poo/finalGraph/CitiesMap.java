@@ -54,17 +54,18 @@ public class CitiesMap {
 
         for (City city: cities){
             try {
-                String cityNom = city.nom();
-                unDiGraph.addVertex(cityNom);
+                if (!mapCities.containsKey(city.nom())){
+                    String cityNom = city.nom();
+                    unDiGraph.addVertex(cityNom);
 
-                for (City inGraphCity: mapCities.values()){
-                    double distance = city.distance(inGraphCity);
-                    if (distance <= distanceMax){
-                        unDiGraph.addEdge(unDiGraph.getVertex(cityNom), unDiGraph.getVertex(inGraphCity.nom()), distance);
+                    for (City inGraphCity: mapCities.values()){
+                        double distance = city.distance(inGraphCity);
+                        if (distance <= distanceMax){
+                            unDiGraph.addEdge(unDiGraph.getVertex(cityNom), unDiGraph.getVertex(inGraphCity.nom()), distance);
+                        }
                     }
+                    mapCities.put(cityNom, city);
                 }
-
-                mapCities.put(cityNom, city);
             }
 
             catch (DuplicateTagException e){
